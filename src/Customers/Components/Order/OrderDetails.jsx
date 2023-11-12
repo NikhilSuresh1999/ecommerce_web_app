@@ -7,6 +7,9 @@ import StarIcon from '@mui/icons-material/Star';
 
 
 const OrderDetails=()=> {
+  
+
+
   return (
     <div className='px:5 lg:px-20'>
       <div>

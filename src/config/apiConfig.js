@@ -1,7 +1,9 @@
 import axios from "axios"
 
-export const API_BASE_URL = "http://localhost:5454"
+export const API_BASE_URL = "snazzy-mark-production.up.railway.app"
+ecommerce-server-production-b73b.up.railway.app
 
+//http://localhost:5454
 const jwt=localStorage.getItem("jwt")
 
 export const api=axios.create({
