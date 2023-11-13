@@ -9,7 +9,7 @@ const ProductCards=({ product })=> {
  
   return (
     <>
-    <div onClick={() => {
+   {[1,1,1,1].map((product)=><div onClick={() => {
       console.log("Click event fired!");
        navigate(`/product/${product.id}`);
     }}
@@ -33,7 +33,7 @@ const ProductCards=({ product })=> {
           <p className="text-green-600 font-semibold">{product.discountPercent}% off</p>
         </div>
       </div>
-    </div>
+    </div>)}
     </>
   );
 }
