@@ -51,8 +51,8 @@ const PaymentSuccess=()=> {
         sx={{mb:6,width:"fit-content"}}
         >
 
-          <AlertTitle>Payment Success </AlertTitle>
-          congragulation your order is placed
+          <AlertTitle>Congragulation</AlertTitle>
+                   your order is placed
 
 
 
