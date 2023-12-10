@@ -10,6 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { findProductsById } from "../../../State/Product/Action";
 import { addItemToCart } from "../../../State/Cart/Action";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 
 
@@ -78,6 +79,9 @@ export default function ProductDetails() {
   const dispatch=useDispatch();
 
   const {products}=useSelector(store=>store)
+
+  const handleBack = () => navigate(-1);
+
   
 
   const handleAddToCart=()=>{
@@ -95,6 +99,15 @@ export default function ProductDetails() {
 
   return (
     <div className="bg-white lg:px-20">
+
+<div>
+      <section className={`bg-white z-50 flex items-center sticky top-0 bg-opacity-95`}>
+        <KeyboardBackspaceIcon
+          className="cursor:pointer"
+          onClick={handleBack}
+        />
+        </section>
+        </div>
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol

@@ -4,13 +4,15 @@ import { authReducer } from "./Auth/Reducer";
 import { customerProductReducer } from "./Product/Reducer";
 import { cartReducer } from "./Cart/Reducer";
 import { orderreducer } from "./Order/Reducer";
+import { usersOrderHistory } from "./Order/Action";
 
 const rootReducers=combineReducers({
 
   auth:authReducer,
   products:customerProductReducer,
   cart:cartReducer,
-  order:orderreducer
+  order:orderreducer,
+ 
 
 })
 

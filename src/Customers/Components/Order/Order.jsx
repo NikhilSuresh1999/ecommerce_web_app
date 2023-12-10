@@ -1,6 +1,12 @@
 import { Grid } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import OrderCard from './OrderCard'
+import { useDispatch, useSelector } from 'react-redux'
+import { store } from '../../../State/store'
+import { usersOrderHistory } from '../../../State/Order/Action'
+
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { useNavigate } from 'react-router-dom'
 
 const orderStatus=[
   {label:"On the Way",value:"on The Way"},
@@ -10,41 +16,56 @@ const orderStatus=[
 ]
 
 const Order=() =>{
+
+  const dispatch=useDispatch();
+  const navigate=useNavigate()
+
+   const {order}=useSelector(store=>store)
+
+   const handleBack = () => navigate(-1);
+
+
+   useEffect(()=>{
+    
+    dispatch(usersOrderHistory())
+
+  },[]);
+
+
+
+
   return (
     <div className='px:5 lg:px-20'>
 
+<div>
+      <section className={`bg-white z-50 flex items-center sticky top-0 bg-opacity-95`}>
+        <KeyboardBackspaceIcon
+          className="cursor:pointer"
+          onClick={handleBack}
+        />
+        </section>
+        </div>
+
       <Grid container sx={{justifyContent:"space-between"}}>
-        <Grid item xs={2.5}>
-          <div className='h-auto shadow-lg bg-white p-5 sticky top-5'>
-
-            <h1 className='font-bold text-lg'>Filter</h1>
-
-            <div className='space-y-4 mt-10'>
-
-              <h1 className='font-semibold'>ORDER STATUS</h1>
-
-              {orderStatus.map((option)=> <div className='flex-items-center'>
-                <input defaultValue={Option.value}  type='checkbox' className='h-4 w-4 bordergray-300 text-indigo-600 focus:ring-indigo-500'/>
-
-                <label htmlFor={Option.value} className='ml-3 text-sm text-gray-600'>
-                  {Option.label}
-                </label>
-              </div>)}
-
-              
-
-            </div>
-
-          </div>
-
-
-        </Grid>
+       
 
         <Grid item xs={9}>
 
           <div className='space-y-5'>
 
-          {[1,1,1,1,1,1].map((item)=><OrderCard/>)}
+         
+
+          {/* {order?.order && order.order.map((item, index) => (
+          <OrderCard key={index} orderData={item} />
+                      ))} */}
+
+{Array.isArray(order?.order) && order.order.map((item, index) => (
+  <OrderCard key={index} orderData={item} />
+))}
+          
+
+          
+
 
           </div>
 

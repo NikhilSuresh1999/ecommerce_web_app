@@ -1,9 +1,10 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import AdressCard from "../AdressCard/AdressCard";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "../../../State/Order/Action";
 import { useNavigate } from "react-router-dom";
+import { getUser } from "../../../State/Auth/Action";
 
 const DelveryAddressForm = () => {
  const dispatch=useDispatch();
@@ -27,6 +28,35 @@ const DelveryAddressForm = () => {
       console.log("address",address)
   }
 
+  const jwt = localStorage.getItem("jwt");
+
+  const { auth } = useSelector((store) => store);
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUser(jwt));
+    }
+  }, [jwt, auth.jwt]);
+
+  const userAddress=()=>{
+
+    const data= auth.user?.address?.map((item)=>{
+      const address={
+        firstName:item.firstName,
+        lastName:item.lastName,
+        streetAddress:item.streetAddress,
+        city: item.city,
+        state:item.state,
+        zipCode:item.zipCode,
+        mobile:item.mobile
+      }
+      const orderData={address,navigate}
+      dispatch(createOrder(orderData))
+      console.log("address",address)
+    })
+
+  }
+
 
 
   return (
@@ -37,16 +67,39 @@ const DelveryAddressForm = () => {
           lg={5}
           className="border rounded-e-md shadow-md h-[30.5rem] overflow-y-scroll"
         >
-          <div className="p-5 py-7 border-b cursor-pointer">
-            <AdressCard />
-            <Button
+          {/* <div className="p-5 py-7 border-b cursor-pointer">
+
+          {auth?.user && auth.user?.address?.map((item)=><AdressCard address={item}/>)}
+            
+            <Button onClick={userAddress}
               sx={{ mt: 2, bgcolor: "RGB(145 85 253)" }}
               size="large"
               variant="contained"
             >
               Delivery Here
             </Button>
-          </div>
+          </div> */}
+
+<div className="p-5 py-7 border-b cursor-pointer">
+  {auth?.user?.address?.map((item) => (
+    <div key={item.id}> {/* Assuming each address has a unique identifier */}
+      <AdressCard address={item} />
+      <Button
+        onClick={userAddress}
+        sx={{ mt: 2, bgcolor: "RGB(145 85 253)" }}
+        size="large"
+        variant="contained"
+      >
+        Delivery Here
+      </Button>
+    </div>
+  ))}
+</div>
+
+
+
+
+
         </Grid>
 
         <Grid item xs={12} lg={7}>

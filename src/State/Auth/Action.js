@@ -1,6 +1,6 @@
 import axios from "axios"
-import { API_BASE_URL } from "../../config/apiConfig"
-import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS,  LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from "./ActionType"
+import { API_BASE_URL, api } from "../../config/apiConfig"
+import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS,  LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS, UPDATE_USER_FAILURE, UPDATE_USER_SUCCESS } from "./ActionType"
 
 
 const token=localStorage.getItem("jwt");
@@ -88,6 +88,26 @@ export const getUser=(jwt)=>async(dispatch)=>{
   }
 
 
+}
+
+
+
+export const updateUserProfile=(reqData)=>async(dispatch)=>{
+  try{
+    const {data}=await api.put(`/api/users/update`,reqData)
+   
+    
+    
+    console.log("updated user: ",data)
+
+    dispatch({type:UPDATE_USER_SUCCESS,payload:data})
+  }catch (error){
+
+    console.log("error",error)
+    dispatch({type:UPDATE_USER_FAILURE,payload:error.message})
+
+
+  }
 }
 
 export const logout=()=>(dispatch)=>{

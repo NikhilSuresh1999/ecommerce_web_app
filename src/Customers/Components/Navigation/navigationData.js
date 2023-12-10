@@ -1,4 +1,5 @@
 export const navigationData = {
+ 
   categories: [
     {
       id: 'women',
@@ -19,13 +20,12 @@ export const navigationData = {
       ],
       sections: [
         {
-          id: 'clothings',
-          name: 'Clothings',
+          id: 'clothing',
+          name: 'Clothing',
           items: [
             { name: 'Tops', id:"top", href: `women/clothing/tops` },
-            { name: 'Dresses', id:"women_dress", href: '#' },
-            { name: 'Women Jeans', id: 'women_jeans' },
-            { name: 'Lengha Choli', id: 'lengha_choli' },
+            { name: 'Women Jeans', id: 'women_jeans', href: `women/clothing/women_jeans` },
+            { name: 'Lengha Choli', id: 'lengha_choli',href: `women/clothing/lengha_choli` },
             { name: 'Sweaters', id: 'sweater' },
             { name: 'T-Shirts', id: 't-shirt' },
             { name: 'Jackets', id: 'jacket' },
@@ -53,7 +53,7 @@ export const navigationData = {
             { name: 'Full Nelson', id: '#' },
             { name: 'My Way', id: '#' },
             { name: 'Re-Arranged', id: '#' },
-            { name: 'Counterfeit', id: '#' },
+            { name: 'ZAQE ZONE', id: '#' },
             { name: 'Significant Other', id: '#' },
           ],
         },
@@ -83,7 +83,7 @@ export const navigationData = {
           name: 'Clothing',
           items: [
             { name: 'Mens Kurtas', id: 'mens_kurta' , href: `men/clothing/mens_kurtas` },
-            { name: 'Shirt', id: 'shirt' },
+            { name: 'Shirt', id: 'shirt', href: `men/clothing/shirt`},
             { name: 'Men Jeans', id: 'men_jeans' },
             { name: 'Sweaters', id: '#' },
             { name: 'T-Shirts', id: 't-shirt' },
@@ -118,7 +118,7 @@ export const navigationData = {
     },
   ],
   pages: [
-    { name: 'Company', id: '/' },
+    { name: 'Home', id: '/', href: '/' },
     { name: 'Stores', id: '/' },
   ],
 }

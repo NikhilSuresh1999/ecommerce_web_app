@@ -14,12 +14,14 @@ import AuthModal from "../../Auth/AuthModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, logout } from "../../../State/Auth/Action";
 import { findProducts } from "../../../State/Product/Action";
+import UserProfile from "../Profile/UserProfile";
+import Alerts from "../Alerts";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navigation() {
+export default function Navigation(props) {
   const [open, setOpen] = useState(false);
   const [openAuthModel, setOpenAuthModel] = useState(false);
   const navigate = useNavigate();
@@ -27,10 +29,10 @@ export default function Navigation() {
   const [anchorE1, setAnchorE1] = useState(null);
   const openUserMenu = Boolean(anchorE1);
   const jwt = localStorage.getItem("jwt");
-  const {auth}=useSelector(store=>store)
-  const{order}=useSelector(store=>store)
-  const dispatch=useDispatch();
-  const location=useLocation();
+  const { auth } = useSelector((store) => store);
+  const { order } = useSelector((store) => store);
+  const dispatch = useDispatch();
+  const location = useLocation();
 
   const handleUserClick = (event) => {
     setAnchorE1(event.currentTarget);
@@ -45,50 +47,81 @@ export default function Navigation() {
 
   const handleClose = () => {
     setOpenAuthModel(false);
-    
   };
   const handleCategoryClick = (category, section, item, close) => {
-
-    console.log("category",category.id)
+    console.log("category", category.id);
     navigate(`/${category.id}/${section.id}/${item.id}`);
     dispatch(findProducts(category));
     close();
   };
 
-  useEffect(()=>{
-
-    if(jwt){
-      dispatch(getUser(jwt))
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUser(jwt));
     }
-    
-  },[jwt,auth.jwt])
+  }, [jwt, auth.jwt]);
 
+  const [showProfile, setShowProfile] = useState(false);
 
-
-useEffect(()=>{
-
-  if(auth.user){
-    handleClose()
-    
+  const handleProfile = () => {
+    setShowProfile(true);
+    console.log("button clicked");
   }
 
-  if(location.pathname==="/login" || location.pathname==="/register")
+  useEffect(() => {
+    if (auth.user) {
+      handleClose();
+    }
+
+    if (location.pathname === "/login" || location.pathname === "/register") {
+      navigate(-1);
+    }
+  }, [auth.user]);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    handleCloseUserMenu();
+    localStorage.clear();
+    navigate("/");
+  };
+
+
+  const [alert,setAlert]=useState(null)
+
+  const showAlert=(message,type)=>
   {
-    navigate(-1)
+    
+       setAlert({
+        msg:message,
+        type:type
+       })
+        setTimeout(() => {
+        setAlert(null);
+        
+       },3000);
   }
 
-},[auth.user])
 
-const handleLogout=()=>{
-  dispatch(logout())
-  handleCloseUserMenu()
-  localStorage.clear();
-  navigate("/");
-}
 
+  const islogin=()=>
+  {
+    if(auth.user!=null)
+    {
+      showAlert("Login Success", "success")
+      console.log("jwt is ",jwt)
+      return true;
+    }
+    console.log("jwt is ",jwt)
+    return false;
+    
+  }
+  
+ 
+  
 
   return (
     <div className="bg-white z-50">
+      {islogin && <Alerts alert={alert}/>}
       {/* Mobile menu */}
       {/* <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -283,8 +316,8 @@ const handleLogout=()=>{
                 <a href="#">
                   <span className="sr-only">Your Company</span>
                   <img
-                    className="h-8 w-8 mr-2"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                    className="h-12 w-11 mr-2"
+                    src="https://icons-for-free.com/iconfiles/png/512/commerce+download+ecommerce+shop+shopping+store+icon-1320184205809097681.png"
                     alt=""
                   />
                 </a>
@@ -436,7 +469,7 @@ const handleLogout=()=>{
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {auth.user?.firstName ? (
                     <div>
-                      <Avatar
+                     <Avatar
                         className="text-white"
                         onClick={handleUserClick}
                         aria-controls={open ? "basic-menu" : undefined}
@@ -448,7 +481,7 @@ const handleLogout=()=>{
                           cursor: "pointer",
                         }}
                       >
-                        {auth.user?.firstName[0].toUpperCase()}
+                        { auth.user?.firstName[0].toUpperCase()}
                       </Avatar>
 
                       <Menu
@@ -461,22 +494,22 @@ const handleLogout=()=>{
                           "area-labelledby": "basic-button",
                         }}
                         anchorOrigin={{
-                          vertical: 'middle',
-                          horizontal: 'right', 
+                          vertical: "middle",
+                          horizontal: "right",
                         }}
 
                         // transformOrigin={{
-                        //   vertical: 'top', 
-                        //   horizontal: 'right', 
+                        //   vertical: 'top',
+                        //   horizontal: 'right',
                         // }}
-                       
-                      
                       >
-                        <MenuItem onClick={handleCloseUserMenu}>
-                          Profile
-                        </MenuItem>
+                        <MenuItem onClick={() => navigate(`/account/user/${auth.user?.id}`)}>
+                          profile
+                          </MenuItem>
 
-                        <MenuItem onClick={()=>navigate(`/account/order/`)}>My Orders</MenuItem>
+                        <MenuItem onClick={() => navigate(`/account/order/`)}>
+                          My Orders
+                        </MenuItem>
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
                       </Menu>
                     </div>
@@ -549,7 +582,7 @@ const handleLogout=()=>{
         </nav>
       </header>
 
-      <AuthModal handleClose={handleClose} open={openAuthModel}/>
+      <AuthModal handleClose={handleClose} open={openAuthModel} />
     </div>
   );
 }

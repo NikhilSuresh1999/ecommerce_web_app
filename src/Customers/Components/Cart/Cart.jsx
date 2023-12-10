@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCart } from '../../../State/Cart/Action'
 import { store } from '../../../State/store'
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const Cart=()=>{
 
@@ -22,9 +23,20 @@ const Cart=()=>{
     dispatch(getCart())
   },[cart.updateCartItem,cart.deleteCartItem])
 
+  const handleBack = () => navigate(-1);
+
 
   return (
     <div>
+
+<div>
+      <section className={` ml-5 bg-white z-50 flex items-center sticky top-0 bg-opacity-95`}>
+        <KeyboardBackspaceIcon
+          className="cursor:pointer"
+          onClick={handleBack}
+        />
+        </section>
+        </div>
 
       <div className='lg:grid grid-cols-3 lg:px-16 relative'>
 

@@ -13,7 +13,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { findProducts } from '../../../State/Product/Action'
-
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const sortOptions = [
   { name: 'Price: Low to High', href: '#', current: false },
@@ -34,6 +34,10 @@ export default function Products() {
   const dispatch=useDispatch();
 
   const{products}=useSelector(store=>store)
+
+  
+
+  const handleBack = () => navigate(-1);
 
   const decodedQueryString=decodeURIComponent(location.search);
   const searchParams=new URLSearchParams(decodedQueryString);
@@ -133,6 +137,20 @@ export default function Products() {
 
   return (
     <div className="bg-white">
+
+<div>
+      <section className={` ml-5 bg-white z-50 flex items-center sticky top-0 bg-opacity-95`}>
+        <KeyboardBackspaceIcon
+          className="cursor:pointer"
+          onClick={handleBack}
+        />
+        </section>
+        </div>
+
+
+
+
+
       <div>
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>

@@ -35,7 +35,8 @@ const RegisterForm=()=> {
       firstName:data.get("firstName"),
       lastName:data.get("lastName"),
       email:data.get("email"),
-      password:data.get("password")
+      password:data.get("password"),
+      mobile:data.get("mobile")
 
 
     }
@@ -98,6 +99,19 @@ const RegisterForm=()=> {
             label='Password'
             fullWidth
             autoComplete='password'
+            />
+
+
+          </Grid>
+
+          <Grid item xs={12} >
+            <TextField
+            required
+            id="mobile"
+            name='mobile'
+            label='mobile'
+            fullWidth
+            autoComplete='mobile'
             />
 
 
