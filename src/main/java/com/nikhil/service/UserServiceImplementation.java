@@ -46,5 +46,34 @@ public class UserServiceImplementation implements UserService {
 		
 		return user;
 	}
+	
+	
+	@Override
+	public User updateUser(Long userId, User req) throws UserException {
+		User user=findUserById(userId);
+		
+		if(req.getFirstName()!=null)
+		{
+			user.setFirstName(req.getFirstName());
+		}
+		
+		if(req.getLastName()!=null)
+		{
+			user.setLastName(req.getLastName());
+		}
+		
+		if(req.getEmail()!=null)
+		{
+			user.setEmail(req.getEmail());
+		}
+		
+		if(req.getMobile()!=null)
+		{
+			user.setMobile(req.getMobile());
+		}
+		
+		
+		return userRepository.save(user);
+	}
 
 }

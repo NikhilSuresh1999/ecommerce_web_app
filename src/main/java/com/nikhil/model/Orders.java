@@ -17,8 +17,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "\"Order\"")
-public class Order {
+//@Table(name = "\"Order\"")
+public class Orders {
 	
 	
 	@Id
@@ -60,14 +60,14 @@ public class Order {
 	private LocalDateTime createdAt;
 
 	
-   public Order() {
+   public Orders() {
 		
 	}
    
    
 	
 	
-	public Order(Long id, String orderId, User user, List<OrderItem> orderItems, LocalDateTime orderDate,
+	public Orders(Long id, String orderId, User user, List<OrderItem> orderItems, LocalDateTime orderDate,
 		LocalDateTime deliveryDate, Address shippingAddress, PaymentDetails paymentDetails, double totalPrice,
 		Integer totalDiscountedPrice, Integer discount, String orderStatus, int totalItem, LocalDateTime createdAt) {
 	super();

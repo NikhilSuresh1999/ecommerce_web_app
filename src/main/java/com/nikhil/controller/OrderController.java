@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nikhil.Exception.OrderException;
 import com.nikhil.Exception.UserException;
 import com.nikhil.model.Address;
-import com.nikhil.model.Order;
+import com.nikhil.model.Orders;
 import com.nikhil.model.User;
 import com.nikhil.service.OrderService;
 import com.nikhil.service.UserService;
@@ -33,19 +33,19 @@ public class OrderController {
 	
 	
 	@PostMapping("/")
-	public ResponseEntity<Order>createOrder(@RequestBody Address shippingAddress,
+	public ResponseEntity<Orders>createOrder(@RequestBody Address shippingAddress,
 			@RequestHeader("Authorization")String jwt)throws UserException
 	{
 		User user=userService.findUserProfileByJwt(jwt);
-		Order order=orderService.createOrder(user, shippingAddress);
+		Orders order=orderService.createOrder(user, shippingAddress);
 		
 		System.out.println("order "+order);
-		return new ResponseEntity<Order>(order,HttpStatus.CREATED);
+		return new ResponseEntity<Orders>(order,HttpStatus.CREATED);
 	}
 	
 	
 	@GetMapping("/user")
-	public ResponseEntity<List<Order>>usersOrderHistory(
+	public ResponseEntity<List<Orders>>usersOrderHistory(
 			@RequestHeader("Authorization")String jwt)throws UserException
 	
 	
@@ -54,18 +54,18 @@ public class OrderController {
 		
 		User user=userService.findUserProfileByJwt(jwt);
 		
-		List<Order>orders=orderService.userOrderHistory(user.getId());
+		List<Orders>orders=orderService.userOrderHistory(user.getId());
 		return new ResponseEntity<>(orders,HttpStatus.CREATED);
 	}
 	
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Order>findOrderById(
+	public ResponseEntity<Orders>findOrderById(
 			@PathVariable("id")Long orderId,
 			@RequestHeader("Authorization")String jwt)throws UserException,OrderException{
 		
 		User user=userService.findUserProfileByJwt(jwt);
-		Order order = orderService.findOrderById(orderId);
+		Orders order = orderService.findOrderById(orderId);
 		
 		return new ResponseEntity<>(order,HttpStatus.ACCEPTED);
 	}

@@ -11,8 +11,9 @@ import com.nikhil.Exception.OrderException;
 import com.nikhil.model.Address;
 import com.nikhil.model.Cart;
 import com.nikhil.model.CartItem;
-import com.nikhil.model.Order;
+
 import com.nikhil.model.OrderItem;
+import com.nikhil.model.Orders;
 import com.nikhil.model.User;
 import com.nikhil.repository.AddressRepository;
 import com.nikhil.repository.CartRepository;
@@ -51,7 +52,7 @@ public class OrderServiceImplementation  implements OrderService {
 	}
 
 	@Override
-	public Order createOrder(User user, Address shippingAddress) {
+	public Orders createOrder(User user, Address shippingAddress) {
 		shippingAddress.setUser(user);
 		Address address=addressRepository.save(shippingAddress);
 		user.getAddress().add(address);
@@ -75,7 +76,7 @@ public class OrderServiceImplementation  implements OrderService {
 			orderItems.add(createdOrderItem);
 		}
 		
-		Order createdOrder=new Order();
+		Orders createdOrder=new Orders();
 		createdOrder.setUser(user);
 		createdOrder.setOrderItems(orderItems);
 		createdOrder.setTotalPrice(cart.getTotalPrice());
@@ -83,11 +84,11 @@ public class OrderServiceImplementation  implements OrderService {
 		createdOrder.setTotalItem(cart.getTotalItem());
 		createdOrder.setShippingAddress(address);
 		createdOrder.setOrderDate(LocalDateTime.now());
-		createdOrder.setOrderStatus("PENDING");
-		createdOrder.getPaymentDetails().setStatus("PENDING");
+		createdOrder.setOrderStatus("PLACED");
+		createdOrder.getPaymentDetails().setStatus("PLACED");
 		createdOrder.setCreatedAt(LocalDateTime.now());
 		
-		Order savedOrder=orderRepository.save(createdOrder);
+		Orders savedOrder=orderRepository.save(createdOrder);
 		
 		for(OrderItem item:orderItems)
 		{
@@ -98,8 +99,8 @@ public class OrderServiceImplementation  implements OrderService {
 	}
 
 	@Override
-	public Order findOrderById(Long orderId) throws OrderException {
-		Optional<Order>opt=orderRepository.findById(orderId);
+	public Orders findOrderById(Long orderId) throws OrderException {
+		Optional<Orders>opt=orderRepository.findById(orderId);
 		
 		if(opt.isPresent())
 		{
@@ -109,15 +110,15 @@ public class OrderServiceImplementation  implements OrderService {
 	}
 
 	@Override
-	public List<Order> userOrderHistory(Long userId) {
-		List<Order>orders=orderRepository.getUserOrders(userId);
+	public List<Orders> userOrderHistory(Long userId) {
+		List<Orders>orders=orderRepository.getUserOrders(userId);
 		return orders;
 	}
 
 	@Override
-	public Order placedOrder(Long orderId) throws OrderException {
+	public Orders placedOrder(Long orderId) throws OrderException {
 		
-		Order order=findOrderById(orderId);
+		Orders order=findOrderById(orderId);
 		order.setOrderStatus("PLACED");
 		order.getPaymentDetails().setStatus("COMPLETED");
 		
@@ -127,45 +128,45 @@ public class OrderServiceImplementation  implements OrderService {
 	}
 
 	@Override
-	public Order confirmedOrder(Long orderId) throws OrderException {
-		Order order=findOrderById(orderId);
+	public Orders confirmedOrder(Long orderId) throws OrderException {
+		Orders order=findOrderById(orderId);
 		order.setOrderStatus("CONFIRMED");
 		return orderRepository.save(order);
 	}
 
 	@Override
-	public Order shippedOrder(Long orderId) throws OrderException {
-		Order order=findOrderById(orderId);
+	public Orders shippedOrder(Long orderId) throws OrderException {
+		Orders order=findOrderById(orderId);
 		order.setOrderStatus("SHIPPED");
 		return orderRepository.save(order);
 		
 	}
 
 	@Override
-	public Order deliveredOrder(Long orderId) throws OrderException {
-		Order order=findOrderById(orderId);
+	public Orders deliveredOrder(Long orderId) throws OrderException {
+		Orders order=findOrderById(orderId);
 		order.setOrderStatus("DELIVERED");
 		return orderRepository.save(order);
 		
 	}
 
 	@Override
-	public Order calceledOrder(Long orderId) throws OrderException {
-		Order order=findOrderById(orderId);
+	public Orders calceledOrder(Long orderId) throws OrderException {
+		Orders order=findOrderById(orderId);
 		order.setOrderStatus("CANCELLED");
 		return orderRepository.save(order);
 		
 	}
 
 	@Override
-	public List<Order> getAllOrders() {
+	public List<Orders> getAllOrders() {
 		return orderRepository.findAll();
 		
 	}
 
 	@Override
 	public void deleteOrder(Long orderId) throws OrderException {
-		Order order=findOrderById(orderId);
+		Orders order=findOrderById(orderId);
 		orderRepository.deleteById(orderId);
 		
 	}
